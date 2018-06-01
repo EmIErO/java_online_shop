@@ -1,16 +1,20 @@
 public class ProductCategory {
     private String name;
     private Integer ID;
-    private static numberOfProducts = 0;
+    private static numberOfCategories = 0;
 
     public ProductCategory() {
         this.name = "Category";
-        this.ID = ++numberOfProducts;
+        this.ID = ++numberOfCategories;
     }
 
     public ProductCategory(String name) {
         this.name = name;
-        this.ID = ++numberOfProducts;
+        this.ID = ++numberOfCategories;
+    }
+
+    public String toString() {
+        return "name:" + this.name + "," + "category ID:" + this.ID;
     }
 
 }
