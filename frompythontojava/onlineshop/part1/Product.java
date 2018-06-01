@@ -12,7 +12,7 @@ public class Product {
 
 
     public Product() {
-        this.name = defaultName;
+        this.name = "defaultName";
         this.defaultPrice = 0.00;
         this.productCategory = new ProductCategory();
         this.ID = ++numberOfProducts;
@@ -27,6 +27,22 @@ public class Product {
         this.ID = ++numberOfProducts;
 
         productList.add(this);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Float getDefaultPrice() {
+        return this.defaultPrice;
+    }
+
+    public void setDefaultPrice(Float defaultPrice) {
+        this.defaultPrice = defaultPrice;
     }
 
     public ProductCategory getProductCategory() {

@@ -12,8 +12,13 @@ public class ProductCategory {
         this.name = name;
         this.ID = ++numberOfCategories;
     }
+
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String toString() {
