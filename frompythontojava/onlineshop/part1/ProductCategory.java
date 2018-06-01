@@ -12,9 +12,12 @@ public class ProductCategory {
         this.name = name;
         this.ID = ++numberOfCategories;
     }
+    public String getName() {
+        return this.name;
+    }
 
     public String toString() {
         return "name:" + this.name + "," + "category ID:" + this.ID;
     }
-
+    
 }

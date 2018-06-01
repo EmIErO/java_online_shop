@@ -17,7 +17,7 @@ public class Product {
         this.productCategory = new ProductCategory();
         this.ID = ++numberOfProducts;
 
-        this.productList.add(this);
+        productList.add(this);
     }
 
     public Product(String name, Float defaultPrice, ProductCategory productCategory) {
@@ -26,10 +26,32 @@ public class Product {
         this.productCategory = productCategory;
         this.ID = ++numberOfProducts;
 
-        this.productList.add(this);
+        productList.add(this);
+    }
+
+    public ProductCategory getProductCategory() {
+        return this.productCategory;
     }
 
     public String toString() {
         return "product ID:" + this.ID + ",name:" + this.name + ",deflaut price:" + this.defaultPrice + "," + this.productCategory.toString();
     }
+
+    public List<Product> getAllProducts() {
+        return productList;
+    }
+
+    public List<Product> getAllProductsBy(ProductCategory productCategory) {
+        List<Product> productsByCategory = new ArrayList<Product>;
+
+        for (Product product: productList) {
+            if (product.getProductCategory().getName().equals(productCategory.getName())) {
+                productCategory.add(product);
+            } else {
+                continue;
+            }
+        }
+        return productsByCategory;
+    }
+
 }
