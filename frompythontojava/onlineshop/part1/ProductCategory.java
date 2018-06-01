@@ -8,9 +8,9 @@ public class ProductCategory {
         this.ID = ++numberOfProducts;
     }
 
-    public ProductCategory(String categoryName) {
-        this.name = categoryName;
+    public ProductCategory(String name) {
+        this.name = name;
         this.ID = ++numberOfProducts;
     }
-    
+
 }
