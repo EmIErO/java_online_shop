@@ -1,3 +1,5 @@
+package frompythontojava.onlineshop.part1;
+
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.Iterator;

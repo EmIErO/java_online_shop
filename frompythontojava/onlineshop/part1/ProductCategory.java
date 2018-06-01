@@ -1,3 +1,7 @@
+package frompythontojava.onlineshop.part1;
+
+import java.lang.*;
+
 public class ProductCategory {
     private String name;
     private Integer ID;
