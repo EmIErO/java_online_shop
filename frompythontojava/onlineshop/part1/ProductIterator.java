@@ -1,4 +1,4 @@
-package frompythontojava.onlineshop.part1;
+//package frompythontojava.onlineshop.part1;
 
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +7,7 @@ public class ProductIterator implements Iterator<Product> {
     private int index;
     private List<Product> products;
 
-    private ProductIterator(List<Product> newProducts) {
+    public ProductIterator(List<Product> newProducts) {
         this.index = 0;
         this.products = newProducts;
     }
@@ -19,8 +19,13 @@ public class ProductIterator implements Iterator<Product> {
     }
 
     @Override
-    public Question next() {
-        return produsts.get(this.index++);
+    public Product next() {
+        return products.get(this.index++);
+    }
+
+    @Override
+    public void remove() {
+        this.products.remove(this.index);
     }
     
 }

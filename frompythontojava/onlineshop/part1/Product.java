@@ -1,7 +1,9 @@
-package frompythontojava.onlineshop.part1;
+//package frompythontojava.onlineshop.part1;
 
 import java.lang.*;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Product {
     private String name;
@@ -15,7 +17,7 @@ public class Product {
 
     public Product() {
         this.name = "defaultName";
-        this.defaultPrice = 0.00;
+        this.defaultPrice = new Float(0);
         this.productCategory = new ProductCategory();
         this.ID = ++numberOfProducts;
 
@@ -47,6 +49,10 @@ public class Product {
         this.defaultPrice = defaultPrice;
     }
 
+    public Integer getID() {
+        return this.ID;
+    }
+
     public ProductCategory getProductCategory() {
         return this.productCategory;
     }
@@ -55,21 +61,34 @@ public class Product {
         return "product ID:" + this.ID + ",name:" + this.name + ",deflaut price:" + this.defaultPrice + "," + this.productCategory.toString();
     }
 
-    public List<Product> getAllProducts() {
+    public static List<Product> getAllProducts() {
         return productList;
     }
 
     public List<Product> getAllProductsBy(ProductCategory productCategory) {
-        List<Product> productsByCategory = new ArrayList<Product>;
+        List<Product> productsByCategory = new ArrayList<Product>();
 
         for (Product product: productList) {
             if (product.getProductCategory().getName().equals(productCategory.getName())) {
-                productCategory.add(product);
+                productsByCategory.add(product);
             } else {
                 continue;
             }
         }
         return productsByCategory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+
+        if (!(o instanceof Product)) {
+            return false;
+        } 
+        Product product = (Product) o;
+        
+        return this.getName().equals(product.getName()) && this.getDefaultPrice().equals(product.getDefaultPrice())
+                && this.getProductCategory().equals(product.getProductCategory()) && this.getID().equals(product.getID());
     }
 
 }
