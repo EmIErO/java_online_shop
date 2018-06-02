@@ -3,14 +3,12 @@
 public abstract class AbstractProcess {
 
     public void process(Orderable item) {
-        //stepBefore();
+        System.out.println("Starting new process.");
         action(item);
-        //stepAfter();
+        stepAfter();
+        System.out.println("End of this process.");
     }
-
-    //public void stepBefore(Orderable item) {}
 
     protected abstract void action(Orderable item);
 
-    //public void stepAfter() {}
 }

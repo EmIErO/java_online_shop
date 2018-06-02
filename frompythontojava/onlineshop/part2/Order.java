@@ -19,23 +19,20 @@ public class Order implements Orderable {
     public boolean checkout() {
         if (this.status.equals("new")) {
             this.status = "checked";
-            return false;
+            return true;
         }
         else {
-            return true;
+            return false;
         }
     }
 
     public boolean pay() {
-        if (this.status.equals("new")) {
-            return false;
-        }
         if (this.status.equals("checked")) {
             this.status = "payed";
-            return false;
+            return true;
         }
         else {
-            return true;
+            return false;
         }
     }
 
