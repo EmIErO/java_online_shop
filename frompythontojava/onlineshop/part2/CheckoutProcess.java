@@ -2,7 +2,7 @@
 
 public class CheckoutProcess extends AbstractProcess {
 
-    protected action(Orderable item) {
+    protected void action(Orderable item) {
         if (item.checkout()) {
             System.out.println("Checkout: done.");
         } else {

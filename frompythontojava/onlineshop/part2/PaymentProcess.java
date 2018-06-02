@@ -2,11 +2,11 @@
 
 public class PaymentProcess extends AbstractProcess {
 
-    protected action(Orderable item) {
+    protected void action(Orderable item) {
         if (item.pay()) {
             System.out.println("Payed sucessfully");
         } else {
-            System.out.println("Alredy payed.");
+            System.out.println("This order is new or already payed");
         }
 
     }
