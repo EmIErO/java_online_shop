@@ -7,5 +7,36 @@ public class Order implements Orderable {
 
     public static Integer numberOfOrders = 0;
 
-    public Order{}
+    public Order() {
+        this.status = "new";
+        this.id = ++numberOfOrders;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public boolean checkout() {
+        if (this.status.equals("new")) {
+            this.status = "checked";
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean pay() {
+        if (this.status.equals("new")) {
+            return false;
+        }
+        if (this.status.equals("checked")) {
+            this.status = "payed";
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
 }
