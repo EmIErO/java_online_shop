@@ -1,4 +1,4 @@
-//package frompythontojava.onlineshop.part2;
+package frompythontojava.onlineshop.part2;
 
 public class Order implements Orderable {
 

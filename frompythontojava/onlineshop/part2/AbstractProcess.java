@@ -1,4 +1,4 @@
-//package frompythontojava.onlineshop.part2;
+package frompythontojava.onlineshop.part2;
 
 public abstract class AbstractProcess {
 
@@ -6,7 +6,7 @@ public abstract class AbstractProcess {
         System.out.println("Starting new process.");
 
         action(item);
-        
+
         System.out.println("End of this process.");
     }
 
