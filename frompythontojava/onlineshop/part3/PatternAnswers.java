@@ -19,4 +19,8 @@ public class PatternAnswers<E> {
             patternAns.add(String.valueOf(i + 1));
         }
     }
+
+    public boolean validateChoosenOpt(String userAnswer) {
+        return this.patternAns.contains(answer);
+    }
 }
