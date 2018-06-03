@@ -1,4 +1,4 @@
-//package frompythontojava.onlineshop.part1;
+package frompythontojava.onlineshop.part1;
 
 import java.lang.*;
 import java.util.List;
