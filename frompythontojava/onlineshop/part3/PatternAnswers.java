@@ -1,3 +1,5 @@
+package frompythontojava.onlineshop.part3;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -6,7 +8,7 @@ public class PatternAnswers<E> {
     private List<String> patternAns;
 
     public PatternAnswers(List<E> list) {
-        this.patternAns = new ArrayList<String>;
+        this.patternAns = new ArrayList<String>();
         this.createAnswerList(list);
     } 
 
@@ -15,12 +17,16 @@ public class PatternAnswers<E> {
     }
 
     public void createAnswerList(List<E> list) {
-        for (int i; i < list.size(); i++) {
-            patternAns.add(String.valueOf(i + 1));
+        for (int i = 1; i <= list.size(); i++) {
+            patternAns.add(String.valueOf(i));
         }
     }
 
+    public void addAnswer(String answer) {
+        this.patternAns.add(answer);
+    }
+
     public boolean validateChoosenOpt(String userAnswer) {
-        return this.patternAns.contains(answer);
+        return this.patternAns.contains(userAnswer);
     }
 }
