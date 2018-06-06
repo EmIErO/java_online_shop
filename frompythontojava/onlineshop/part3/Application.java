@@ -15,7 +15,7 @@ public class Application {
     private List<ProductCategory> categories;
     private List<Basket> baskets;
 
-    private Options currentOptions;
+    private HandleOptions currentOptions;
 
     public static void main(String[] args) {
 	    Application app = new Application();
@@ -25,43 +25,46 @@ public class Application {
     public Application() {
         this.categories = new ArrayList<ProductCategory>();
         this.baskets = new ArrayList<Basket>();
-        this.currentOptions = new Options();
+        this.currentOptions = new HandleOptions();
     }
 
     private void runApp() {
         while (isRunning) {
-            this.currentOptions.setCurrentOptionsAndAnswers(Arrays.asList("Create new product", "Create new product category", 
-                                        "Create new featured product category", "Basket", 
-                                         "List of products from choosen category", "Availability of choosen product"));
-            printMenu(this.currentOptions.getCurrentOptions()); 
+            this.currentOptions.setPatternOpt(new Options(Arrays.asList("Create new product", 
+                                                                        "Create new product category", 
+                                                                        "Basket", 
+                                                                        "List of products from choosen category", 
+                                                                        "Availability of choosen product")));
+            printMenu(); 
             addOption("0. Exit\n", "0");
             this.currentOptions.getValidUserAns();                                
             chooseMainOption();
             
         }
     }
-    private void printMenu(List<String> options) {
-        for (int i = 0; i < options.size(); i++) {
-            System.out.println((i + 1) + ". " + options.get(i) + "\n");
-        }
+    private void printMenu() {
+        this.currentOptions.getPatternOpt().printList(currentOptions.getPatternOpt().getOptions());
     }
 
     private void addOption(String name, String value) {
         System.out.println(name);
-        this.currentOptions.getCurrentPatternAns().addAnswer(value);
+        this.currentOptions.getPatternOpt().addAnswer(value);
     }
 
     private void chooseMainOption() {
         switch (this.currentOptions.getCurrentOption()) {
                 case 1:
-                    currentOptions.setCurrentOptionsAndAnswers(Arrays.asList("Deflaut product", "New defined product"));
-                    printMenu(this.currentOptions.getCurrentOptions());
+                    currentOptions.setPatternOpt(new Options(Arrays.asList("Deflaut product", 
+                                                                            "New defined product")));
+                    printMenu();
                     this.currentOptions.getValidUserAns();
                     chooseProduct();
                     break;
                 case 2:
-                    currentOptions.setCurrentOptionsAndAnswers(Arrays.asList("Deflaut category", "New defined category"));
-                    printMenu(this.currentOptions.getCurrentOptions());
+                    currentOptions.setPatternOpt(new Options(Arrays.asList("New deflaut product category", 
+                                                                            "New product category", 
+                                                                            "New featured product category")));
+                    printMenu();
                     this.currentOptions.getValidUserAns();
                     chooseCategory();
                     break;
@@ -91,59 +94,85 @@ public class Application {
                     System.out.println("New deflaut product has been created.\n");
                     break;
                 case 2:
-                    System.out.println("Works... ? \n");
-                    this.currentOptions.getUserInput(Arrays.asList("Insert product's name\n", "Insert product's price\n"));
-                    selectCategory();
+                    this.currentOptions.getUserInput(Arrays.asList("Insert product's name:\n", "Insert product's price:\n"));
                     try {
+                        selectCategory();
                         getValidProductAns();
                         System.out.println("New product has been created.\n");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Wrong input for price. Use numbers separated with a dot /0.00/.\n");
+                    } catch (NumberFormatException e1) {
+                        System.out.println("\t Wrong input for price. Use numbers separated with a dot /0.00/.\n");
+                    } catch (IllegalArgumentException e2) {
+                        System.out.println("\t There are no categories to choose from. Add new category first.\n");
                     }
-
-                    this.currentOptions.getUserInput(Arrays.asList("Insert year\n", "Insert month\n", "Insert day\n"));
-                    try {
-                        Date newDate = currentOptions.getValidDateAns();
-                        System.out.println(newDate.getDay() + "." + newDate.getMonth() + "." + newDate.getYear() + "\n");
-                        System.out.println(newDate.toString());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Wrong input for date object.\n");
-                    }
-                        
-                        //Product(String name, Float defaultPrice, ProductCategory productCategory)
                     break;
         }
     }
 
-    private void chooseProduct() {
+    private void chooseCategory() {
         switch (this.currentOptions.getCurrentOption()) {
                 case 1:
-                    ProductCategory newCategory = new ProductCategory();
-                    this.category.add(ProductCategory);
-                    System.out.println("New product's category has been created.\n");
+                    //ProductCategory newCategory = new ProductCategory();
+                    this.categories.add(new ProductCategory());
+                    System.out.println("New deflaut product category has been created.\n");
                     break;
                 case 2:
-                   
+                    this.currentOptions.getUserInput(Arrays.asList("Insert new category's name:\n"));
+                    this.categories.add(new ProductCategory(this.currentOptions.getCurrentUserInput().get(FIRST_ON_LIST)));
+                    System.out.println("New product category has been created.\n");
                     break;
+                case 3:
+                    this.currentOptions.getUserInput(Arrays.asList("Insert new category's name:\n"));
+                    Date newDate = createNewDate();
+                    this.categories.add(new FeaturedProductCategory(this.currentOptions.getCurrentUserInput().get(FIRST_ON_LIST), newDate));
+                    System.out.println("New featured product category has been created.\n");
         }
     }
     
-    private void selectCategory() {
+    private void selectCategory() throws IllegalArgumentException {
         if (this.categories.isEmpty()) {
-            System.out.println("Categories' list is empty. \nCreate new category.");
+            System.out.println("Categories' list is empty. \n");
+            throw new IllegalArgumentException();
         } else {
             System.out.println("Select category: \n");
-            printMenu(this.categories);
+            currentOptions.setPatternOpt(new Options(this.categories));
+            printMenu();
             this.currentOptions.getValidUserAns();
         }
         
     }
+
     private Product getValidProductAns() throws NumberFormatException {
-        String name = this.currentOptions.getUserInput.get(FIRST_ON_LIST);
-        Flost price = Float.parseFloat(currentOptions.getUserInput.get(SECOND_ON_LIST));
+        String name = this.currentOptions.getCurrentUserInput().get(FIRST_ON_LIST);
+        Float price = Float.parseFloat(currentOptions.getCurrentUserInput().get(SECOND_ON_LIST));
         ProductCategory category = this.categories.get(currentOptions.getCurrentOption());
         return (new Product(name, price, category));
     }
+
+    public Date getValidDateAns() throws NumberFormatException {
+        List<Integer> dataForDate = new ArrayList<Integer>();
+        for (String input: currentOptions.getCurrentUserInput()) {
+            dataForDate.add(Integer.parseInt(input));
+        }
+        return (new GregorianCalendar(dataForDate.get(0), (dataForDate.get(1) - 1), dataForDate.get(2)).getTime());
+    }
+
+    private Date createNewDate() {    
+        Date newDate = null;
+        boolean hasNewDate = false;
+        while (!hasNewDate) {
+            this.currentOptions.getUserInput(Arrays.asList("Insert year:\n", "Insert month:\n", "Insert day:\n"));
+            try {
+                newDate = getValidDateAns();
+                System.out.println(newDate.toString());
+                hasNewDate = true;
+                
+            } catch (NumberFormatException e) {
+                System.out.println("\t Wrong input for date object.\n");
+            }
+        }
+        return newDate;
+    }
+    
 }
 
 // "Add products to the basket", "Remove products from the basket","See products in the basket",

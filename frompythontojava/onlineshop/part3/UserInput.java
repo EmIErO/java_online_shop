@@ -5,5 +5,5 @@ import java.util.Date;
 public interface UserInput {
 
     public void getValidUserAns();
-    public Date getValidDateAns();
+    //public Date getValidDateAns();
 }

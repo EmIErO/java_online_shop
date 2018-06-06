@@ -1,78 +1,54 @@
 package frompythontojava.onlineshop.part3;
 
-import frompythontojava.onlineshop.part1.*;
-import frompythontojava.onlineshop.part2.*;
+import java.util.List;
+import java.util.ArrayList;
 
-import java.util.*;
+public class Options<E> {
 
-public class Options implements UserInput {
-
-    private List<String> currentOptions;
-    private PatternAnswers currentPatternAns;
-    private List<String> userInput;
-    private String currentUserAns;
-    private int currentOption;
-
-    private Scanner reader;
+    private List<E> options;
+    private List<String> patternAns;
 
     public Options() {
-        this.currentOptions = new ArrayList<String>();
-        this.userInput = new ArrayList<String>();
-        this.reader = new Scanner(System.in);
+        this.patternAns = new ArrayList<String>();        
     }
 
-    public int getCurrentOption() {
-        return this.currentOption;
+    public Options(List<E> list) {
+        this.options = list;
+        this.patternAns = new ArrayList<String>();        
+        createAnswerList(list);
+    } 
+
+    public List<String> getPatternAns() {
+        return this.patternAns;
     }
 
-    public String getCurrentUserAns() {
-        return this.currentUserAns;
+    public List<E> getOptions() {
+        return this.options;
+    }
+    
+    public void setOptionsAndAnswers(List<E> list) {
+        this.options = list;
+        createAnswerList(list);
     }
 
-    public List<String> getCurrentOptions() {
-        return this.currentOptions;
-    }
-
-    public PatternAnswers getCurrentPatternAns() {
-        return this.currentPatternAns;
-    }
-
-    public List<String> getUserInput() {
-        return this.userInput;
-    }
-
-    public void setCurrentOptionsAndAnswers(List<String> options) {
-        this.currentOptions = options;
-        this.currentPatternAns = new PatternAnswers(options);
-    }
-
-    private int convertToInt(String userAns) throws NumberFormatException {
-        return Integer.parseInt(userAns);
-    }
-
-    public void getValidUserAns() {
-        do {                                                                    
-            this.currentUserAns = this.reader.nextLine();
-        } while (!currentPatternAns.validateChoosenOpt(this.currentUserAns));
-            this.currentOption = convertToInt(this.currentUserAns);
-    }
-
-    public Date getValidDateAns() throws NumberFormatException {
-        List<Integer> dataForDate = new ArrayList<Integer>();
-        for (String input: this.userInput) {
-            dataForDate.add(Integer.parseInt(input));
+    public void createAnswerList(List<E> list) {
+        patternAns.clear();
+        for (int i = 1; i <= list.size(); i++) {
+            patternAns.add(String.valueOf(i));
         }
-        return (new GregorianCalendar(dataForDate.get(0), (dataForDate.get(1) - 1), dataForDate.get(2)).getTime());
     }
 
-    public void getUserInput(List<String> requirements) {
-        this.userInput.clear();
-        for (String requirement: requirements) {
-            System.out.println(requirement);
-            this.userInput.add(reader.nextLine());
+    public void addAnswer(String answer) {
+        this.patternAns.add(answer);
+    }
+
+    public boolean validateChoosenOpt(String userAnswer) {
+        return this.patternAns.contains(userAnswer);
+    }
+
+    public void printList(List<E> list) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ". " + list.get(i).toString() + "\n");
         }
-        System.out.println(this.userInput);
     }
-
 }
-// Arrays.asList("Isert year\n", "Insert month\n", "Insert day\n");
