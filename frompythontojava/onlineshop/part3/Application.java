@@ -98,7 +98,16 @@ public class Application {
                     }
                     break;
                 case 6:
-                   
+                    if (products.isEmpty()) {
+                        System.out.println("No products to choose from.\n");
+                    } else {
+                        this.currentOptions.getUserInput(Arrays.asList("Insert product's name:\n"));
+                        if (productIsAvailable(this.currentOptions.getCurrentUserInput().get(FIRST_ON_LIST))) {
+                            System.out.println("Product is available.\n");
+                        } else {
+                            System.out.println("Product is not available.\n");
+                        }
+                    }
                     break;
                 case 0:
                     isRunning = false;
@@ -204,7 +213,16 @@ public class Application {
         }
     }
 
-    
+    private boolean productIsAvailable(String name) {
+        for (Product product: this.products) {
+            if (product.getName().equals(name)) {
+                return true;
+            } else {
+                continue;
+            }
+        }
+        return false;
+    }
 }
 
 // "Add products to the basket", "Remove products from the basket","See products in the basket",
