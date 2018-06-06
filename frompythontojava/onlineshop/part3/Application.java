@@ -9,10 +9,14 @@ public class Application {
 
     private final int FIRST_ON_LIST = 0;
     private final int SECOND_ON_LIST = 1;
+    private final int THIRD_ON_LIST = 2;
+    private final int SKIP_ON_LIST = 1;
+    private final int SKIP_MONTH = 1;
 
     private boolean isRunning = true;
 
     private List<ProductCategory> categories;
+    private List<Product> products = Product.productList;
     private List<Basket> baskets;
 
     private HandleOptions currentOptions;
@@ -33,6 +37,7 @@ public class Application {
             this.currentOptions.setPatternOpt(new Options(Arrays.asList("Create new product", 
                                                                         "Create new product category", 
                                                                         "Basket", 
+                                                                        "List of products",
                                                                         "List of products from choosen category", 
                                                                         "Availability of choosen product")));
             printMenu(); 
@@ -72,6 +77,12 @@ public class Application {
                     
                     break;
                 case 4:
+                    if (this.products.isEmpty()) {
+                        System.out.println("Products' list is empty. Add new product.\n");
+                    } else {
+                        currentOptions.setPatternOpt(new Options(products));
+                        printMenu();
+                        }
                     
                     break;
                 case 5:
@@ -144,7 +155,7 @@ public class Application {
     private Product getValidProductAns() throws NumberFormatException {
         String name = this.currentOptions.getCurrentUserInput().get(FIRST_ON_LIST);
         Float price = Float.parseFloat(currentOptions.getCurrentUserInput().get(SECOND_ON_LIST));
-        ProductCategory category = this.categories.get(currentOptions.getCurrentOption());
+        ProductCategory category = this.categories.get(currentOptions.getCurrentOption() - SKIP_ON_LIST);
         return (new Product(name, price, category));
     }
 
@@ -153,7 +164,7 @@ public class Application {
         for (String input: currentOptions.getCurrentUserInput()) {
             dataForDate.add(Integer.parseInt(input));
         }
-        return (new GregorianCalendar(dataForDate.get(0), (dataForDate.get(1) - 1), dataForDate.get(2)).getTime());
+        return (new GregorianCalendar(dataForDate.get(FIRST_ON_LIST), (dataForDate.get(SECOND_ON_LIST) - SKIP_MONTH), dataForDate.get(THIRD_ON_LIST)).getTime());
     }
 
     private Date createNewDate() {    

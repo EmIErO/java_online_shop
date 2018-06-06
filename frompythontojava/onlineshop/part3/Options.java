@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 public class Options<E> {
 
+    private final int SKIP_ON_LIST = 1;
+
     private List<E> options;
     private List<String> patternAns;
 
@@ -48,7 +50,7 @@ public class Options<E> {
 
     public void printList(List<E> list) {
         for (int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ". " + list.get(i).toString() + "\n");
+            System.out.println((i + SKIP_ON_LIST) + ". " + list.get(i).toString() + "\n");
         }
     }
 }
