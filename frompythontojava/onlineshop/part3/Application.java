@@ -40,14 +40,14 @@ public class Application {
                                                                         "List of products",
                                                                         "List of products from choosen category", 
                                                                         "Availability of choosen product")));
-            printMenu(); 
+            printOptions(); 
             addOption("0. Exit\n", "0");
             this.currentOptions.getValidUserAns();                                
             chooseMainOption();
             
         }
     }
-    private void printMenu() {
+    private void printOptions() {
         this.currentOptions.getPatternOpt().printList(currentOptions.getPatternOpt().getOptions());
     }
 
@@ -61,7 +61,7 @@ public class Application {
                 case 1:
                     currentOptions.setPatternOpt(new Options(Arrays.asList("Deflaut product", 
                                                                             "New defined product")));
-                    printMenu();
+                    printOptions();
                     this.currentOptions.getValidUserAns();
                     chooseProduct();
                     break;
@@ -69,7 +69,7 @@ public class Application {
                     currentOptions.setPatternOpt(new Options(Arrays.asList("New deflaut product category", 
                                                                             "New product category", 
                                                                             "New featured product category")));
-                    printMenu();
+                    printOptions();
                     this.currentOptions.getValidUserAns();
                     chooseCategory();
                     break;
@@ -81,12 +81,21 @@ public class Application {
                         System.out.println("Products' list is empty. Add new product.\n");
                     } else {
                         currentOptions.setPatternOpt(new Options(products));
-                        printMenu();
+                        printOptions();
                         }
                     
                     break;
                 case 5:
-                    
+                    if (products.isEmpty()) {
+                        System.out.println("No products to choose from.\n");
+                    } else {
+                        System.out.println("Choose a category:\n");
+                        currentOptions.setPatternOpt(new Options(categories));
+                        printOptions();
+                        this.currentOptions.getValidUserAns();
+                        List<Product> searchedProducts = products.get(FIRST_ON_LIST).getAllProductsBy(this.categories.get(this.currentOptions.getCurrentOption() - SKIP_ON_LIST));
+                        printSearchedProducts(searchedProducts);
+                    }
                     break;
                 case 6:
                    
@@ -146,7 +155,7 @@ public class Application {
         } else {
             System.out.println("Select category: \n");
             currentOptions.setPatternOpt(new Options(this.categories));
-            printMenu();
+            printOptions();
             this.currentOptions.getValidUserAns();
         }
         
@@ -183,6 +192,18 @@ public class Application {
         }
         return newDate;
     }
+    
+    private void printSearchedProducts(List<Product> searchedProducts) {
+        if (searchedProducts.isEmpty()) {
+            System.out.println("No matching products found.\n");
+        } else {
+            currentOptions.setPatternOpt(new Options(searchedProducts));
+            System.out.println("Matching products:\n\n");
+            printOptions();
+            System.out.println("\n\n");
+        }
+    }
+
     
 }
 
