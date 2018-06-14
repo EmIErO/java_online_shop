@@ -1,7 +1,7 @@
-package frompythontojava.onlineshop.part3;
+package frompythontojava.onlineshop.part2;
 
 import frompythontojava.onlineshop.part1.*;
-import frompythontojava.onlineshop.part2.*;
+import frompythontojava.onlineshop.part3.*;
 
 import java.util.*;
 
@@ -14,10 +14,16 @@ public class Application {
     private final int SKIP_MONTH = 1;
 
     private boolean isRunning = true;
+    private boolean basketOn = true;
+    private boolean addProduct = true;                     //
 
     private List<ProductCategory> categories;
     private List<Product> products = Product.productList;
-    private List<Basket> baskets;
+    private List<Product> basket;
+    
+    private Order currentOrder; 
+    private CheckoutProcess check;
+    private PaymentProcess pay;                        //
 
     private HandleOptions currentOptions;
 
@@ -28,8 +34,11 @@ public class Application {
 
     public Application() {
         this.categories = new ArrayList<ProductCategory>();
-        this.baskets = new ArrayList<Basket>();
+        this.basket = new ArrayList<Product>();
         this.currentOptions = new HandleOptions();
+
+        this.check = new CheckoutProcess();
+        this.pay = new PaymentProcess();
     }
 
     private void runApp() {
@@ -74,6 +83,23 @@ public class Application {
                     chooseCategory();
                     break;
                 case 3:
+                    if (this.products.isEmpty()) {
+                        System.out.println("Products' list is empty. Add new product.\n");
+                    } else {
+                        basketOn = true;
+                        this.currentOrder = new Order();
+                        while (basketOn) {
+                           currentOptions.setPatternOpt(new Options(Arrays.asList("Add product to the basket", 
+                                                                            "See all products in the basket",
+                                                                            "Checkout",
+                                                                            "Remove all products",
+                                                                            "Return")));
+                            printOptions();
+                            this.currentOptions.getValidUserAns();
+                            handleBasket(); 
+                        }
+                        
+                    }
                     
                     break;
                 case 4:
@@ -82,7 +108,20 @@ public class Application {
                     } else {
                         currentOptions.setPatternOpt(new Options(products));
                         printOptions();
-                        }
+
+                        // this.addProduct = true;
+                        // while (addProduct) {
+                        //     currentOptions.setPatternOpt(new Options(products));
+                        //     printOptions();
+
+                        //     currentOptions.setPatternOpt(new Options(Arrays.asList("Choose product amd add to the basket.", 
+                        //                                                             "Return")));
+                        //     printOptions();
+                        //     this.currentOptions.getValidUserAns();
+                        //     addProduct();
+                        // }
+                        
+                    }
                     
                     break;
                 case 5:
@@ -170,6 +209,56 @@ public class Application {
         
     }
 
+    private void handleBasket() {
+        switch (this.currentOptions.getCurrentOption()) {
+                case 1:
+                    currentOptions.setPatternOpt(new Options(this.products));
+                    printOptions();
+                    System.out.println("Choose a product. \n");
+                    this.currentOptions.getValidUserAns();
+                    this.basket.add(products.get(this.currentOptions.getCurrentOption() - SKIP_ON_LIST));
+                    System.out.println("Product added successfully. \n");
+                    break;
+                case 2:
+                    if (this.basket.isEmpty()) {
+                        System.out.println("Your basket is empty. \n");
+                    } else {
+                        currentOptions.setPatternOpt(new Options(this.basket));
+                        printOptions();
+                    }
+                    break;
+                case 3:
+                    this.check.action(this.currentOrder);
+                    currentOptions.setPatternOpt(new Options(Arrays.asList("See all products in the basket",
+                                                                            "Pay")));
+                    printOptions();
+                    this.currentOptions.getValidUserAns();
+                    pay();
+                    break;
+                case 4:
+                    this.basket.clear();
+                    System.out.println("All products removed successfully. \n");
+                    break;
+                case 5:
+                    basketOn = false;
+                    break;
+        }
+    }
+
+    private void pay() {
+        switch (this.currentOptions.getCurrentOption()) {
+                case 1:
+                    currentOptions.setPatternOpt(new Options(this.basket));
+                    printOptions();
+                    break;
+                case 2:
+                    this.pay.action(this.currentOrder);
+                    System.out.println("Thank you for shopping!\n");
+                    basketOn = false;
+                    break;
+        }
+    }
+
     private Product getValidProductAns() throws NumberFormatException {
         String name = this.currentOptions.getCurrentUserInput().get(FIRST_ON_LIST);
         Float price = Float.parseFloat(currentOptions.getCurrentUserInput().get(SECOND_ON_LIST));
@@ -223,6 +312,7 @@ public class Application {
         }
         return false;
     }
+
 }
 
 // "Add products to the basket", "Remove products from the basket","See products in the basket",
